@@ -1,5 +1,6 @@
-flask
-openai
-python-dotenv
-glob2
+tensorflow
+nltk
+colorama
 numpy
+scikit_learn
+Flask
