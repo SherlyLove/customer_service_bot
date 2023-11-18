@@ -1,4 +1,9 @@
 csb_venv/
+.env
+__pycache__/
 
 # model
 chat_model
+
+# logs
+logs/
