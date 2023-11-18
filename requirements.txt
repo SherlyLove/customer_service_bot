@@ -3,3 +3,10 @@ openai
 python-dotenv
 glob2
 numpy
+twilio
+uvicorn
+python-decouple
+sqlalchemy
+psycopg2-binary
+python-multipart
+pyngrok
