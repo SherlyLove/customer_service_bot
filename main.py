@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from twilio.twiml.messaging_response import MessagingResponse
 
 # internal imports
-from utils import send_msg, logger
+from utils import send_msg, logger, store_conversation
 from models import Conversation, SessionLocal
 
 # create the FastAPI instance
@@ -45,22 +45,7 @@ async def reply(request: Request, Body = Form(), db: Session = Depends(get_db)):
     response = f"Welcome to {company_name}, {user_name}. How may we help you today?"
     
     # store conversation in database
-    try:
-        conversation = Conversation(
-            sender = user_number,
-            message = Body,
-            response = response
-        )
-        
-        db.add(conversation)
-        db.commit()
-        
-        logger.info(f"Conversation #{conversation.id} stored in database")
-        
-    except SQLAlchemyError as e:
-        db.rollback()
-        
-        logger.error(f"Error storing conversation in database: {e}")
+    store_conversation(db, user_number, response, Body)
         
     send_msg(user_number, response)
     
