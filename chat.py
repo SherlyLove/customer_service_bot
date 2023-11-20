@@ -15,7 +15,7 @@ with open("intents.json") as file:
     
     
 # Main chat function
-def chat():
+def chat(msg):
     # Load trained model
     model = keras.models.load_model('chat_model')
     
@@ -31,24 +31,15 @@ def chat():
     # parameters
     max_len = 20
     
-    # Start chatting
-    while True:
-        print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
-        inp = input()
-        
-        if inp.lower() == "quit":
-            break
-        
-        result = model.predict(keras.preprocessing.sequence.pad_sequences(
-            tokenizer.texts_to_sequences([inp]), truncating='post', maxlen=max_len
-        ))
-        tag = lbl_encoder.inverse_transform([np.argmax(result)])
-        
-        for i in data['intents']:
-            if i['tag'] == tag:
-                print(Fore.GREEN + "Chatbot: " + Style.RESET_ALL, np.random.choice(i['responses']))
-                
     
-print(Fore.YELLOW + "Start messaging with the bot (type quit to stop)!" + Style.RESET_ALL)
-
-chat()
+    # Get response
+    result = model.predict(keras.preprocessing.sequence.pad_sequences(
+        tokenizer.texts_to_sequences([msg]), truncating='post', maxlen=max_len
+    ))
+    tag = lbl_encoder.inverse_transform([np.argmax(result)])
+    
+    for i in data['intents']:
+        if i['tag'] == tag:
+            response = np.random.choice(i['responses'])
+    
+    return response

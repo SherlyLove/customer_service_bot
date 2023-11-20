@@ -7,6 +7,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 # internal imports
 from utils import send_msg, logger, store_conversation
 from models import Conversation, SessionLocal
+from chat import chat
 
 # create the FastAPI instance
 csb = FastAPI()
@@ -39,11 +40,12 @@ async def reply(request: Request, Body = Form(), db: Session = Depends(get_db)):
     # Extract name and phone number 
     user_name = data['ProfileName'].split("whatsapp:")[-1]
     user_number = data['From'].split("whatsapp:")[-1]
+    message = data['Body']
     
     logger.info(f"Sending response to {user_name}: {user_number}")
     
-    response = f"Welcome to {company_name}, {user_name}. How may we help you today?"
-    
+    response = chat(message)
+        
     # store conversation in database
     store_conversation(db, user_number, response, Body)
         
