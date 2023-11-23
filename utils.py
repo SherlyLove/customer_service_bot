@@ -15,7 +15,7 @@ twilio_number = config('TWILIO_NUMBER')
 client = Client(account_sid, auth_token)
 
 # configure logger
-logging.basicConfig(filename="logs/csb.log", encoding='utf-8', format="%(asctime)s %(levelname)s: %(name)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S", level=logging.INFO)
+logging.basicConfig(filename="logs/csb-intents-01.log", encoding='utf-8', format="%(asctime)s %(levelname)s: %(name)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
