@@ -1,9 +1,17 @@
 csb_venv/
 .env
 __pycache__/
+../vscode/
 
 # model
 chat_model
+models/
 
 # logs
 logs/
+
+# intents
+intents/
+
+# bash scripts
+*.sh
