@@ -6,16 +6,17 @@ import pickle
 
 from tensorflow import keras
 from keras.models import Sequential
-from keras.layers import Dense, Embedding, GlobalAveragePooling1D
+from keras.layers import Dense, Embedding, GlobalAveragePooling1D, Dropout
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
+from keras.optimizers import SGD
 
 
 from sklearn.preprocessing import LabelEncoder
 
 
 # Load json file and extract required data
-with open('intents.json') as file:
+with open('intents/intents-bitext-01.json') as file:
     data = json.load(file)
     
 training_sentences = []
@@ -58,11 +59,14 @@ padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)  
 model = Sequential()
 model.add(Embedding(vocab_size, embedding_dim, input_length=max_len))
 model.add(GlobalAveragePooling1D())
-model.add(Dense(16, activation='relu'))
-model.add(Dense(16, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
 
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+optimizer = SGD(lr=0.01)
+model.compile(loss='sparse_categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
 model.summary()
 
@@ -73,7 +77,7 @@ history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs)
 
 
 # Save trained model
-model.save("chat_model")
+model.save("models/csb-model-1")
 
 # Save fitted tokenizer
 with open('tokenizer.pickle', 'wb') as handle:
@@ -82,3 +86,5 @@ with open('tokenizer.pickle', 'wb') as handle:
 # save the fitted label encoder
 with open('label_encoder.pickle', 'wb') as enc_file:
     pickle.dump(lbl_encoder, enc_file, protocol=pickle.HIGHEST_PROTOCOL)
+    
+print("Model created and saved successfully")
