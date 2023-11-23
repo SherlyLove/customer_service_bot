@@ -44,11 +44,16 @@ async def reply(request: Request, Body = Form(), db: Session = Depends(get_db)):
     
     logger.info(f"Sending response to {user_name}: {user_number}")
     
+    
+    # get response from chat function
     response = chat(message)
         
+   
     # store conversation in database
     store_conversation(db, user_number, response, Body)
         
+    
+    # send message to user
     send_msg(user_number, response)
     
     return "Success"
