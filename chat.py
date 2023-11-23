@@ -10,14 +10,14 @@ import colorama
 from colorama import Fore, Style, Back
 colorama.init()
 
-with open("intents.json") as file:
+with open("intents/intents-bitext-01.json") as file:
     data = json.load(file)
     
     
 # Main chat function
 def chat(msg):
     # Load trained model
-    model = keras.models.load_model('chat_model')
+    model = keras.models.load_model('csb-model-1')
     
     
     # load tokenizer object
