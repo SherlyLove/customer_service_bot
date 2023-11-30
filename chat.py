@@ -1,14 +1,8 @@
 import json
+import pickle
 import numpy as np
 from tensorflow import keras
-from sklearn.preprocessing import LabelEncoder
 
-import random
-import pickle
-
-import colorama
-from colorama import Fore, Style, Back
-colorama.init()
 
 with open("intents/intents-bitext-01.json") as file:
     data = json.load(file)
